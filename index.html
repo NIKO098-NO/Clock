@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chuuk Live Time — Pacific/Chuuk (UTC+10)</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter & JetBrains Mono fonts for clean UI and strict tabular numerals -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        lagoon: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            400: '#38bdf8',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                            950: '#051929',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-100 text-slate-900 dark:bg-[#050c17] dark:text-slate-50 min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 transition-colors duration-300 selection:bg-sky-500 selection:text-white antialiased">
+
+    <!-- Ambient Deep Ocean Background Glow -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0 flex items-center justify-center">
+        <div class="w-[26rem] h-[26rem] sm:w-[44rem] sm:h-[44rem] bg-sky-400/20 dark:bg-sky-500/10 rounded-full blur-3xl -translate-y-8"></div>
+        <div class="w-[20rem] h-[20rem] sm:w-[32rem] sm:h-[32rem] bg-teal-400/15 dark:bg-teal-500/10 rounded-full blur-3xl translate-x-24 translate-y-16"></div>
+    </div>
+
+    <!-- Main Bento Card Container -->
+    <main class="relative z-10 w-full max-w-3xl bg-white/85 dark:bg-slate-900/75 backdrop-blur-2xl border border-slate-200/90 dark:border-slate-800/80 rounded-3xl shadow-2xl shadow-slate-300/50 dark:shadow-black/60 p-5 sm:p-8 md:p-10 transition-all duration-300 flex flex-col gap-5 sm:gap-6">
+        
+        <!-- 1. Top Header Bar: Location Info & Controls -->
+        <header class="flex flex-wrap items-center justify-between gap-4">
+            <!-- Left: Location Title & Live Badge -->
+            <div class="flex items-center gap-3.5">
+                <div class="relative flex items-center justify-center w-10 h-10 rounded-2xl bg-sky-500/10 dark:bg-sky-400/10 border border-sky-500/20 dark:border-sky-400/20 shrink-0">
+                    <span class="relative flex h-3 w-3">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+                    </span>
+                </div>
+                <div>
+                    <div class="flex items-center gap-2">
+                        <h1 class="text-base sm:text-lg font-bold tracking-tight text-slate-900 dark:text-white">
+                            Chuuk, Micronesia
+                        </h1>
+                        <span class="hidden xs:inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20">
+                            Live
+                        </span>
+                    </div>
+                    <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">
+                        Pacific/Chuuk &bull; UTC+10 (CHUT)
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right: 12H/24H Segmented Pill & Theme Switcher -->
+            <div class="flex items-center gap-2.5 ml-auto sm:ml-0">
+                <!-- 12H / 24H Segmented Control -->
+                <div role="group" aria-label="Time format" class="inline-flex items-center p-1 rounded-2xl bg-slate-100 dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/70">
+                    <button id="btn-12h" type="button"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide transition-all bg-white dark:bg-slate-700 text-slate-900 dark:text-white shadow-sm">
+                        12H
+                    </button>
+                    <button id="btn-24h" type="button"
+                        class="px-3 py-1.5 rounded-xl text-xs font-bold tracking-wide transition-all text-slate-500 dark:text-slate-400 hover:text-slate-800 dark:hover:text-slate-200">
+                        24H
+                    </button>
+                </div>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-toggle" type="button" aria-label="Toggle Light or Dark Mode"
+                    class="p-2.5 rounded-2xl bg-slate-100 hover:bg-slate-200/80 dark:bg-slate-800/90 dark:hover:bg-slate-700/80 border border-slate-200/80 dark:border-slate-700/70 text-slate-700 dark:text-slate-200 transition-all active:scale-95 focus:outline-none focus:ring-2 focus:ring-sky-500">
+                    <!-- Sun Icon (Dark Mode) -->
+                    <svg class="w-5 h-5 hidden dark:block text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                    </svg>
+                    <!-- Moon Icon (Light Mode) -->
+                    <svg class="w-5 h-5 block dark:hidden text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                    </svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- 2. Hero Clock Stage: Recessed Glass Panel with Strict Columnar Unit Alignment -->
+        <section aria-label="Live Chuuk Digital Clock"
+            class="relative overflow-hidden rounded-2xl bg-slate-50/90 dark:bg-slate-950/75 border border-slate-200/90 dark:border-slate-800/90 px-3 py-7 sm:px-8 sm:py-11 shadow-inner">
+            
+            <!-- Aligned Time Grid: Each unit sits in its own centered column directly over its micro-label -->
+            <div class="flex items-start justify-center w-full select-all" style="font-variant-numeric: tabular-nums;">
+                
+                <!-- Hours Column -->
+                <div class="flex flex-col items-center">
+                    <span id="hours" class="font-mono font-bold text-[clamp(2rem,7.8vw,4.75rem)] leading-none tracking-tight text-slate-900 dark:text-white">
+                        12
+                    </span>
+                    <span class="mt-2.5 sm:mt-3.5 text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                        Hours
+                    </span>
+                </div>
+
+                <!-- Colon Separator 1 -->
+                <div class="flex flex-col items-center px-0.5 sm:px-2">
+                    <span class="font-mono font-bold text-[clamp(2rem,7.8vw,4.75rem)] leading-none text-slate-300 dark:text-slate-700 animate-pulse">
+                        :
+                    </span>
+                </div>
+
+                <!-- Minutes Column -->
+                <div class="flex flex-col items-center">
+                    <span id="minutes" class="font-mono font-bold text-[clamp(2rem,7.8vw,4.75rem)] leading-none tracking-tight text-slate-900 dark:text-white">
+                        00
+                    </span>
+                    <span class="mt-2.5 sm:mt-3.5 text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                        Minutes
+                    </span>
+                </div>
+
+                <!-- Colon Separator 2 -->
+                <div class="flex flex-col items-center px-0.5 sm:px-2">
+                    <span class="font-mono font-bold text-[clamp(2rem,7.8vw,4.75rem)] leading-none text-slate-300 dark:text-slate-700">
+                        :
+                    </span>
+                </div>
+
+                <!-- Seconds Column -->
+                <div class="flex flex-col items-center">
+                    <span id="seconds" class="font-mono font-bold text-[clamp(2rem,7.8vw,4.75rem)] leading-none tracking-tight text-slate-900 dark:text-white">
+                        00
+                    </span>
+                    <span class="mt-2.5 sm:mt-3.5 text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                        Seconds
+                    </span>
+                </div>
+
+                <!-- Decimal Separator -->
+                <div class="flex flex-col items-center pl-0.5 sm:pl-1.5">
+                    <span class="font-mono font-bold text-[clamp(2rem,7.8vw,4.75rem)] leading-none text-sky-500/70 dark:text-sky-400/60">
+                        .
+                    </span>
+                </div>
+
+                <!-- Milliseconds Column (aligned cleanly to baseline & micro-label row) -->
+                <div class="flex flex-col items-center">
+                    <div class="h-[clamp(2rem,7.8vw,4.75rem)] flex items-end">
+                        <span id="milliseconds" class="font-mono font-semibold text-[clamp(1.25rem,4.5vw,2.75rem)] leading-[0.88] tracking-tight text-sky-600 dark:text-sky-400">
+                            000
+                        </span>
+                    </div>
+                    <span class="mt-2.5 sm:mt-3.5 text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] text-sky-600/80 dark:text-sky-400/80">
+                        MS
+                    </span>
+                </div>
+
+                <!-- AM / PM Period Badge Column (hidden automatically in 24H mode) -->
+                <div id="ampm-wrapper" class="flex flex-col items-center ml-2 sm:ml-4">
+                    <div class="h-[clamp(2rem,7.8vw,4.75rem)] flex items-center">
+                        <span id="ampm" class="px-2 py-1 sm:px-3 sm:py-1.5 rounded-xl bg-sky-500/10 dark:bg-sky-400/10 border border-sky-500/20 dark:border-sky-400/20 text-[clamp(0.7rem,2.1vw,1.1rem)] leading-none font-sans font-bold tracking-wider text-sky-700 dark:text-sky-300 uppercase">
+                            AM
+                        </span>
+                    </div>
+                    <span class="mt-2.5 sm:mt-3.5 text-[9px] sm:text-[11px] font-semibold uppercase tracking-[0.16em] text-slate-400 dark:text-slate-500">
+                        Period
+                    </span>
+                </div>
+
+            </div>
+
+            <!-- Subtle Real-Time Second Progress Bar along bottom edge -->
+            <div class="absolute bottom-0 left-0 right-0 h-1 bg-slate-200/70 dark:bg-slate-800/80">
+                <div id="second-progress" class="h-full bg-gradient-to-r from-sky-500 to-teal-400 w-0"></div>
+            </div>
+        </section>
+
+        <!-- 3. Bottom Metadata Grid: Equal-Height 2-Column Bento Cards -->
+        <footer class="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+            
+            <!-- Left Card: Current Date in Chuuk -->
+            <div class="flex items-center gap-3.5 p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-800/45 border border-slate-200/80 dark:border-slate-800/80">
+                <div class="w-10 h-10 rounded-xl bg-sky-500/10 dark:bg-sky-400/10 border border-sky-500/20 dark:border-sky-400/20 flex items-center justify-center text-sky-600 dark:text-sky-400 shrink-0">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                </div>
+                <div class="min-w-0">
+                    <p class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                        Current Date in Chuuk
+                    </p>
+                    <p id="date-display" class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 truncate mt-0.5">
+                        Loading date...
+                    </p>
+                </div>
+            </div>
+
+            <!-- Right Card: Interactive Timezone & Coordinates Toggle -->
+            <button id="tz-toggle" type="button"
+                class="group flex items-center justify-between gap-3 p-4 rounded-2xl bg-slate-50/90 hover:bg-slate-100/90 dark:bg-slate-800/45 dark:hover:bg-slate-800/75 border border-slate-200/80 dark:border-slate-800/80 text-left transition-all active:scale-[0.99] focus:outline-none focus:ring-2 focus:ring-sky-500">
+                <div class="flex items-center gap-3.5 min-w-0">
+                    <div class="w-10 h-10 rounded-xl bg-teal-500/10 dark:bg-teal-400/10 border border-teal-500/20 dark:border-teal-400/20 flex items-center justify-center text-teal-600 dark:text-teal-400 shrink-0">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                    </div>
+                    <div class="min-w-0">
+                        <p id="tz-eyebrow" class="text-[11px] font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
+                            Timezone Policy
+                        </p>
+                        <p id="tz-label" class="text-sm sm:text-base font-semibold text-slate-800 dark:text-slate-100 truncate mt-0.5">
+                            Standard Time &bull; No DST
+                        </p>
+                    </div>
+                </div>
+                <!-- Subtle Swap Indicator Icon -->
+                <span class="p-1.5 rounded-lg text-slate-400 group-hover:text-sky-500 dark:text-slate-500 dark:group-hover:text-sky-400 transition-colors shrink-0" title="Switch between Timezone Policy and Coordinates">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"></path>
+                    </svg>
+                </span>
+            </button>
+
+        </footer>
+    </main>
+
+    <script>
+        /**
+         * Chuuk Live Time Clock Application (Pacific/Chuuk, UTC+10)
+         * Uses Intl.DateTimeFormat with 'Pacific/Chuuk' for accurate timezone conversion
+         * and requestAnimationFrame for 60fps+ millisecond & progress rendering.
+         */
+        (function () {
+            // DOM Elements
+            const hoursEl = document.getElementById('hours');
+            const minutesEl = document.getElementById('minutes');
+            const secondsEl = document.getElementById('seconds');
+            const millisecondsEl = document.getElementById('milliseconds');
+            const ampmEl = document.getElementById('ampm');
+            const ampmWrapperEl = document.getElementById('ampm-wrapper');
+            const secondProgressEl = document.getElementById('second-progress');
+            const dateDisplayEl = document.getElementById('date-display');
+            
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const btn12h = document.getElementById('btn-12h');
+            const btn24h = document.getElementById('btn-24h');
+            const tzToggleBtn = document.getElementById('tz-toggle');
+            const tzEyebrowEl = document.getElementById('tz-eyebrow');
+            const tzLabelEl = document.getElementById('tz-label');
+
+            // Application State
+            const CHUUK_TIMEZONE = 'Pacific/Chuuk';
+            let is24Hour = false;
+            let showCoordinates = false;
+            let lastDateString = '';
+
+            // Formatters for Chuuk Timezone
+            const formatter12 = new Intl.DateTimeFormat('en-US', {
+                timeZone: CHUUK_TIMEZONE,
+                hour12: true,
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            const formatter24 = new Intl.DateTimeFormat('en-US', {
+                timeZone: CHUUK_TIMEZONE,
+                hourCycle: 'h23',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+
+            const dateFormatter = new Intl.DateTimeFormat('en-US', {
+                timeZone: CHUUK_TIMEZONE,
+                weekday: 'short',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+
+            // Toggle Light / Dark Theme (defaults to Dark Mode)
+            themeToggleBtn.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+            });
+
+            // Switch between 12H and 24H formats
+            function setHourFormat(use24) {
+                is24Hour = use24;
+                const activeClasses = ['bg-white', 'dark:bg-slate-700', 'text-slate-900', 'dark:text-white', 'shadow-sm'];
+                const inactiveClasses = ['text-slate-500', 'dark:text-slate-400', 'hover:text-slate-800', 'dark:hover:text-slate-200'];
+
+                if (is24Hour) {
+                    btn24h.classList.add(...activeClasses);
+                    btn24h.classList.remove(...inactiveClasses);
+                    btn12h.classList.remove(...activeClasses);
+                    btn12h.classList.add(...inactiveClasses);
+                    ampmWrapperEl.classList.add('hidden');
+                } else {
+                    btn12h.classList.add(...activeClasses);
+                    btn12h.classList.remove(...inactiveClasses);
+                    btn24h.classList.remove(...activeClasses);
+                    btn24h.classList.add(...inactiveClasses);
+                    ampmWrapperEl.classList.remove('hidden');
+                }
+            }
+
+            btn12h.addEventListener('click', () => setHourFormat(false));
+            btn24h.addEventListener('click', () => setHourFormat(true));
+
+            // Toggle Timezone Info / Geographic Coordinates
+            tzToggleBtn.addEventListener('click', () => {
+                showCoordinates = !showCoordinates;
+                if (showCoordinates) {
+                    tzEyebrowEl.textContent = 'Weno, Chuuk State';
+                    tzLabelEl.textContent = '7.4465° N, 151.8468° E';
+                } else {
+                    tzEyebrowEl.textContent = 'Timezone Policy';
+                    tzLabelEl.textContent = 'Standard Time • No DST';
+                }
+            });
+
+            // Main Clock Render Loop
+            function updateClock() {
+                try {
+                    const now = new Date();
+                    const activeFormatter = is24Hour ? formatter24 : formatter12;
+                    const parts = activeFormatter.formatToParts(now);
+
+                    let hour = '12';
+                    let minute = '00';
+                    let second = '00';
+                    let dayPeriod = 'AM';
+
+                    for (let i = 0; i < parts.length; i++) {
+                        const part = parts[i];
+                        if (part.type === 'hour') hour = part.value;
+                        else if (part.type === 'minute') minute = part.value;
+                        else if (part.type === 'second') second = part.value;
+                        else if (part.type === 'dayPeriod') dayPeriod = part.value;
+                    }
+
+                    // UTC+10 is an integer-hour offset, so milliseconds match UTC milliseconds
+                    const rawMs = now.getUTCMilliseconds();
+                    const ms = String(rawMs).padStart(3, '0');
+
+                    // Update DOM elements
+                    hoursEl.textContent = hour;
+                    minutesEl.textContent = minute;
+                    secondsEl.textContent = second;
+                    millisecondsEl.textContent = ms;
+                    if (!is24Hour) {
+                        ampmEl.textContent = dayPeriod;
+                    }
+
+                    // Smooth second progress indicator
+                    const secondPct = ((Number(second) * 1000 + rawMs) / 60000) * 100;
+                    secondProgressEl.style.width = `${secondPct.toFixed(2)}%`;
+
+                    // Update Date only when it changes
+                    const formattedDate = dateFormatter.format(now);
+                    if (formattedDate !== lastDateString) {
+                        lastDateString = formattedDate;
+                        dateDisplayEl.textContent = formattedDate;
+                    }
+                } catch (err) {
+                    console.error('Error updating Chuuk clock:', err);
+                }
+
+                requestAnimationFrame(updateClock);
+            }
+
+            // Initialize Clock Loop
+            updateClock();
+        })();
+    </script>
+</body>
+</html>
